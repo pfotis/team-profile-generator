@@ -6,7 +6,12 @@ const Manager = require("./lib/Manager");
 
 const employees = [];
 
-function addMember() {
+const initApp = () =>{
+    startHtml();
+    addMember();
+}
+
+const addMember = () => {
     inquirer.prompt([{
         message: "Enter team member's name",
         name: "name"
@@ -69,13 +74,12 @@ function addMember() {
                     finishHtml();
                 }
             });
-            
         });
     });
 }
 
-function startHtml() {
-    const html =    `<!DOCTYPE html>
+const startHtml = () => {
+    const data =    `<!DOCTYPE html>
                         <html lang="en">
                         <head>
                             <meta charset="UTF-8">
@@ -90,7 +94,7 @@ function startHtml() {
                             </nav>
                             <div class="container">
                                 <div class="row">`;
-    fs.writeFile("./output/team.html", html, function(err) {
+    fs.writeFile("./output/team.html", data, function(err) {
         if (err) {
             console.log(err);
         }
@@ -98,7 +102,7 @@ function startHtml() {
     console.log("start");
 }
 
-function addHtml(member) {
+const addHtml = (member) => {
     return new Promise(function(resolve, reject) {
         const name = member.getName();
         const role = member.getRole();
@@ -154,7 +158,7 @@ function addHtml(member) {
     }); 
 }
 
-function finishHtml() {
+const finishHtml = () => {
     const html = ` </div>
     </div>
     
@@ -168,5 +172,5 @@ function finishHtml() {
     });
 }
 
-addMember();
+initApp();
 
