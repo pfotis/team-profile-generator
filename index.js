@@ -1,4 +1,4 @@
-onst inquirer = require("inquirer");
+const inquirer = require("inquirer");
 const fs = require("fs");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -71,6 +71,100 @@ function addMember() {
             });
             
         });
+    });
+}
+
+function startHtml() {
+    const html =    `<!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+                            <title>Team Profile</title>
+                        </head>
+                        <body>
+                            <nav class="navbar navbar-dark bg-dark">
+                                <h1 class="navbar-brand mb-0">Team Profile</h1>
+                            </nav>
+                            <div class="container">
+                                <div class="row">`;
+    fs.writeFile("./output/team.html", html, function(err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    console.log("start");
+}
+
+function addHtml(member) {
+    return new Promise(function(resolve, reject) {
+        const name = member.getName();
+        const role = member.getRole();
+        const id = member.getId();
+        const email = member.getEmail();
+        let data = "";
+        if (role === "Engineer") {
+            const gitHub = member.getGithub();
+            data = `<div class="col-4">
+                        <div class="card" style="margin: 25px">
+                            <h4>${name}</h4>
+                            <h5>Engineer</h5>
+                            <ul>
+                                <li>ID : ${id}</li>
+                                <li>Email : ${email}</li>
+                                <li>GitHub : ${gitHub}</li>
+                            </ul>
+                        </div>
+                    </div>`;
+        } else if (role === "Intern") {
+            const school = member.getSchool();
+            data = `<div class="col-4">
+                        <div class="card" style="margin: 25px">
+                            <h4>${name}</h4>
+                            <h5>Intern</h5>
+                            <ul>
+                                <li>ID : ${id}</li>
+                                <li>Email : ${email}</li>
+                                <li>School : ${school}</li>
+                            </ul>
+                        </div>
+                    </div>`;
+        } else {
+            const officePhone = member.getOfficeNumber();
+            data = `<div class="col-4">
+                        <div class="card" style="margin: 25px">
+                            <h4>${name}</h4>
+                            <h5>Manager</h5>
+                            <ul>
+                                <li>ID: ${id}</li>
+                                <li>Email : ${email}</li>
+                                <li>Office Phone : ${officePhone}</li>
+                            </ul>
+                        </div>
+                    </div>`;
+        }
+        fs.appendFile("./output/team.html", data, function (err) {
+            if (err) {
+                return reject(err);
+            };
+            return resolve();
+        });
+    }); 
+}
+
+function finishHtml() {
+    const html = ` </div>
+    </div>
+    
+</body>
+</html>`;
+
+    fs.appendFile("./output/team.html", html, function (err) {
+        if (err) {
+            console.log(err);
+        };
     });
 }
 
